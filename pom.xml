@@ -29,6 +29,23 @@
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies -->
+			<!-- Данная зависимость содержит неконфликтуемые между собой версии различных библиотек -->
+			<!-- Поэтому библиотеки можно указывать без указания их версий -->
+			<!-- Но если в какой-то библиотеке указать конкретную версию, то будет применяться конкретная версия -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>3.3.5</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,6 +64,31 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- Плагин компоновки проекта -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<!-- Класс запуска проекта -->
+							<mainClass>pro.sky.calculator.CalculatorServiceApplication</mainClass>
+						</manifest>
+					</archive>
+					<!-- Собирать будем в jar -->
+					<descriptorRefs>jar-with-dependencies</descriptorRefs>
+				</configuration>
+				<executions>
+					<!-- Сборка осуществляется в один (единый) пакет -->
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
